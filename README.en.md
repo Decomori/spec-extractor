@@ -41,3 +41,13 @@ and installed directory. Use `--mode skill` for the standalone copy instead.
 
 No background hooks, telemetry, shared API keys or automatic production writes are bundled.
 See SECURITY.md and PRIVACY.md for processing boundaries. MIT licensed.
+
+## Image evidence and offline viewer (0.2.0)
+`image_tools.py` measures received-file pixels, reports EXIF-oriented and stored sizes,
+and creates overlapping lossless regions with coordinates. It requires Python 3.10+
+and Pillow (`pip install -r requirements.txt`). JSON helpers still use only the standard library.
+The host must expose file access and code execution; installation does not grant either.
+No OCR or source-truth guarantee is provided. Text interpretation still needs model/human review.
+Exports include an offline viewer.html for search, option comparison and evidence browsing.
+Build the personal ChatGPT ZIP with `python3 tools/build_chatgpt_zip.py NEW_ZIP_PATH`;
+the manifest and skills must be at the ZIP root. Repository archives are not upload bundles.

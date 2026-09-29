@@ -31,6 +31,10 @@ def validate(root: Path = ROOT) -> list[str]:
         require(manifest['name'] == slug, 'Plugin name mismatch.')
         require(bool(re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', slug)), 'Invalid slug.')
         require(manifest['version'] == (root / 'VERSION').read_text().strip(), 'Version mismatch.')
+        require(isinstance(manifest.get('author'), dict) and bool(manifest['author'].get('name')), 'Author name required.')
+        for field in ('longDescription', 'developerName', 'category'):
+            require(bool(manifest.get('interface', {}).get(field)), 'Missing interface.' + field)
+        require(isinstance(manifest.get('interface', {}).get('capabilities'), list), 'Capabilities array required.')
         require(manifest['skills'] == './skills/', 'Skills path must be ./skills/.')
         require('mcpServers' not in manifest and 'apps' not in manifest and 'hooks' not in manifest,
                 'v0.1 must not contain unconfigured external servers, connections or hooks.')

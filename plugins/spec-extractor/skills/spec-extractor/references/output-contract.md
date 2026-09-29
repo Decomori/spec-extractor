@@ -23,3 +23,10 @@ Evidence quotes should be the shortest useful supporting fragment, not full docu
 `missing` means not found within the inspected scope, not proof that the fact doesn't exist.
 The validator detects malformed results and broken reference IDs; it cannot prove that
 quoted evidence exists or is interpreted correctly. Review the actual source to do that.
+
+Optional image source fields: positive integer `width_px`, `height_px`,
+`stored_width_px`, `stored_height_px`, `coordinate_space: "exif_transposed_pixels"`,
+`measurement: "decoded_received_file"`, and tool-returned `sha256`. Never invent these.
+Evidence may include `bbox_px: [left, top, right, bottom]` (half-open) plus the same
+coordinate_space. Bounds are checked against source width/height; this does not verify
+that the quote is present in the region. Legacy descriptive locators remain supported.

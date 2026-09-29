@@ -1,1 +1,3 @@
-# Standard-library-only helpers; Python 3.10+. No mandatory pip dependencies.
+# Optional for image inspection/regions; also required for the full test suite.
+# JSON validation/export needs only Python 3.10+ standard library.
+Pillow>=12.0,<13

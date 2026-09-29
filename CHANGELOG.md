@@ -1,3 +1,13 @@
+# 0.2.0
+
+- Measure received-file pixels, EXIF orientation, SHA-256; reject corrupt/multi-frame input.
+- Generate overlapping lossless evidence regions with explicit unreviewed status.
+- Validate optional image bounds and coordinate conventions in extraction evidence.
+- Export an offline searchable viewer with option comparison and safe text rendering.
+- Add explicit no-tool fallbacks and critical-number source review guidance.
+- Include cloud-ingestion metadata and a reproducible plugin-root ZIP builder.
+- Model/OCR accuracy and Work/Chat equivalence are not established by unit tests.
+
 # Changelog
 
 ## 0.1.1 — 2026-09-29

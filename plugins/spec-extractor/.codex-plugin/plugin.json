@@ -1,6 +1,6 @@
 {
   "name": "spec-extractor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Source-backed product specification extraction with validation and CSV export.",
   "license": "MIT",
   "skills": "./skills/",
@@ -9,6 +9,17 @@
     "shortDescription": "Source-backed product specification extraction with validation and CSV export.",
     "defaultPrompt": [
       "Use Spec Extractor for this task."
+    ],
+    "longDescription": "Extract source-backed product specifications, measure received image pixels with the optional Pillow helper, prepare evidence regions, and export JSON, CSV and an offline HTML viewer. Image text still requires model or human review. File access and code execution depend on the host.",
+    "developerName": "Decomori",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
     ]
+  },
+  "author": {
+    "name": "Decomori",
+    "url": "https://github.com/Decomori"
   }
 }

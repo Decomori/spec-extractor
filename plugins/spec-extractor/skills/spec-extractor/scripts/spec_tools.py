@@ -34,6 +34,7 @@ def validate(data: Any) -> list[str]:
     if not isinstance(sources, list) or not isinstance(products, list) or not products:
         return errors + ['sources must be a list; products must be a nonempty list.']
     known: set[str] = set()
+    source_by_id = {}
     for index, source in enumerate(sources):
         label = f'sources[{index}]'
         if not isinstance(source, dict):
@@ -44,6 +45,10 @@ def validate(data: Any) -> list[str]:
         if isinstance(sid, str):
             check(sid not in known, label + ': duplicate source id.')
             known.add(sid)
+            source_by_id[sid] = source
+        if 'width_px' in source or 'height_px' in source:
+            check(all(type(source.get(k)) is int and source[k] > 0 for k in ('width_px','height_px')),
+                  label + ': image dimensions must be positive integers.')
         check(isinstance(source.get('file'), str) and bool(source.get('file', '').strip()), label + ': file/URL label required.')
         check(source.get('kind') in {'pdf', 'image', 'text', 'html', 'spreadsheet', 'other'}, label + ': invalid kind.')
     def evidence(items: Any, label: str, required: bool = False) -> None:
@@ -60,6 +65,17 @@ def validate(data: Any) -> list[str]:
                   where + ': unknown source_id.')
             check(isinstance(item.get('locator'), str) and bool(item.get('locator', '').strip()), where + ': locator required (page, row, line, or image region).')
             check(isinstance(item.get('quote'), str) and bool(item.get('quote', '').strip()), where + ': short verbatim evidence required.')
+            if 'bbox_px' in item:
+                box = item['bbox_px']
+                valid_box = isinstance(box, list) and len(box) == 4 and all(type(v) is int for v in box)
+                check(valid_box, where + ': bbox_px must contain four integers.')
+                check(item.get('coordinate_space') == 'exif_transposed_pixels', where + ': unsupported coordinate space.')
+                source = source_by_id.get(item.get('source_id')) if isinstance(item.get('source_id'), str) else None
+                valid_size = source is not None and all(type(source.get(k)) is int and source[k] > 0 for k in ('width_px','height_px'))
+                check(valid_size and source.get('coordinate_space') == 'exif_transposed_pixels', where + ': bbox requires measured source dimensions and coordinate space.')
+                if valid_box and valid_size:
+                    l,t,r,b = box
+                    check(0 <= l < r <= source['width_px'] and 0 <= t < b <= source['height_px'], where + ': bbox outside source dimensions.')
             if 'page' in item:
                 check(type(item['page']) is int and item['page'] >= 1, where + ': page must be a positive one-based integer.')
     product_keys: set[tuple[str, str]] = set()
@@ -161,9 +177,14 @@ def export(data: dict, out: Path) -> None:
     errors = validate(data)
     if errors:
         raise ValueError('\n'.join(errors))
+    template = (Path(__file__).resolve().parents[1] / 'assets/viewer.html').read_text('utf-8')
+    # Escape HTML script terminators inside untrusted source text, not just JSON quotes.
+    embedded = json.dumps(data, ensure_ascii=False, allow_nan=False).replace('&', '\\u0026').replace('<', '\\u003c').replace('>', '\\u003e')
+    viewer = template.replace('__SPEC_DATA__', embedded)
     # A new folder prevents accidental replacement of earlier evidence/results.
     out.mkdir(parents=True, exist_ok=False)
     (out / 'specifications.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False) + '\n', 'utf-8')
+    (out / 'viewer.html').write_text(viewer, 'utf-8')
     rows = flatten(data)
     with (out / 'specifications.csv').open('w', encoding='utf-8-sig', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
@@ -210,7 +231,7 @@ def main() -> int:
             if args.out is None:
                 raise ValueError('--out is required for export.')
             export(data, args.out)
-            print(f'Exported JSON, UTF-8-BOM CSV and review.md to {args.out}')
+            print(f'Exported JSON, UTF-8-BOM CSV, review.md and viewer.html to {args.out}')
         else:
             print('PASS: structure and evidence references. Source accuracy was NOT independently checked.')
         return 0

@@ -21,3 +21,7 @@ marketplace publication is separate from universal public-directory submission.
 The package's scripts and workflow prose are original implementations. External
 documentation is referenced, not copied wholesale. No third-party repository code,
 fonts, product photos or company files are bundled.
+
+## Image helper references
+- https://pillow.readthedocs.io/en/stable/reference/Image.html (decode, crop, size, safety limits)
+- https://pillow.readthedocs.io/en/stable/reference/ImageOps.html (EXIF orientation)

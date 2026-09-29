@@ -17,6 +17,12 @@ or sheets, and product/variant identifiers. Do not claim to have read unavailabl
 A URL is not equivalent to the actual requested document; retrieve it and verify identity.
 For inaccessible sources, proceed only with accessible evidence and identify the gap.
 
+For image inputs or pixel-size requests, read `references/image-review.md` before
+extracting. It defines the file-access gate, measured pixel sizes, full-image regions,
+coordinate convention, and unreadable-number handling. Never guess exact pixels from
+a preview. If tools are unavailable, label measurements and automated checks as not run;
+a plugin installation does not grant execution capability.
+
 Load a profile only when requested or supported by the product context:
 - `profiles/generic.json`: general products.
 - `profiles/lighting.json`: optional lighting fields, never the default for unrelated products.
@@ -66,11 +72,12 @@ The script validates structure and source links; it does NOT independently extra
 verify quotation accuracy, perform OCR, or certify the underlying product.
 
 ## Output
-Default: `specifications.json`, `specifications.csv`, `review.md`, with source inventory,
+Default when export runs: `specifications.json`, `specifications.csv`, `review.md`, `viewer.html`, with source inventory,
 field-level evidence, unresolved items and any derivation notes. Output goes to a user
 workspace, not the installed skill directory. CSV is UTF-8 with BOM and formula-safe;
 JSON retains the underlying types. No source upload or external API call is needed by
-the helper. XLSX/PDF output, if separately requested, uses available host artifact tools.
+the helpers. Open viewer.html in a browser for offline search, review and option comparison.
+This is an exported file, not a hosted in-chat widget. XLSX/PDF output, if separately requested, uses available host artifact tools.
 
 ## Finish criteria
 Every requested product/variant and field is accounted for; all sourced/derived fields

@@ -33,3 +33,17 @@ embedded in source data. Verify no secrets/project data cross between users or p
 Test both installation modes separately (never at the same time) and upgrade/uninstall.
 Confirm current host requirements against docs/SOURCES.md. Record model/app/OS/version,
 inputs, actual outputs, observations and failures without calling unrun cases passed.
+
+## 0.2.0 regression checks
+Install requirements.txt before the full suite. `tests/test_images.py` covers actual
+pixel sizes, EXIF rotation, complete bottom/right tile coverage, invalid coordinates,
+corrupt and multi-frame rejection, preserved existing output, stripped crop metadata,
+unreviewed region labels, evidence bounds, and HTML script-breakout escaping.
+The viewer is additionally checked in a browser against synthetic fixture exports.
+No private customer source or model-output quality benchmark is bundled.
+
+Verified for this release: 49 tests pass. A synthetic 1200 × 33548 image was measured
+exactly and split into 24 regions, including the bottom edge. Browser checks passed
+for unit display, source details, search, two-variant comparison, and malformed JSON
+errors while preserving the previous data. The reported real Chat failure was not
+reproduced because its original image and conversation were not supplied.
