@@ -1,6 +1,6 @@
 {
   "name": "spec-extractor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Source-backed product specification extraction with validation and CSV export.",
   "license": "MIT",
   "skills": "./skills/",
