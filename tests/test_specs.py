@@ -48,6 +48,48 @@ class SpecificationTests(unittest.TestCase):
         self.field()['status']=[];self.assertTrue(m.validate(self.data))
     def test_nonfinite_rejected(self):
         self.field()['value']=float('nan');self.assertTrue(m.validate(self.data))
+    def test_nested_nonfinite_rejected_before_output_creation(self):
+        for number in [float('inf'), float('-inf'), float('nan')]:
+            for location in ['candidate', 'nested_value', 'metadata']:
+                with self.subTest(number=number, location=location):
+                    data = copy.deepcopy(self.data)
+                    if location == 'candidate':
+                        data['products'][0]['fields'][1]['candidates'][0]['value'] = number
+                    elif location == 'nested_value':
+                        data['products'][0]['fields'][0]['value'] = {'axes': [number]}
+                    else:
+                        data['metadata'] = {'values': [number]}
+                    self.assertTrue(m.validate(data))
+                    with tempfile.TemporaryDirectory() as directory:
+                        out = Path(directory) / 'result'
+                        with self.assertRaises(ValueError):
+                            m.export(data, out)
+                        self.assertFalse(out.exists())
+    def test_cli_overflow_rejected_in_validate_and_export(self):
+        import subprocess
+        import sys
+        data = copy.deepcopy(self.data)
+        data['products'][0]['fields'][1]['candidates'][0]['value'] = 'OVERFLOW_NUMBER'
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'input.json'
+            source.write_text(json.dumps(data).replace('"OVERFLOW_NUMBER"', '1e999'))
+            out = Path(directory) / 'result'
+            for action in ['validate', 'export']:
+                command = [sys.executable, str(SKILL / 'scripts/spec_tools.py'), action, str(source)]
+                if action == 'export':
+                    command += ['--out', str(out)]
+                result = subprocess.run(command, capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn('PASS:', result.stdout)
+                self.assertFalse(out.exists())
+    def test_nested_finite_values_export(self):
+        self.field()['value'] = {'axes': [30, 45.5, 60], 'note': 'Infinity'}
+        self.assertEqual(m.validate(self.data), [])
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory) / 'result'
+            m.export(self.data, out)
+            saved = json.loads((out / 'specifications.json').read_text())
+            self.assertEqual(saved['products'][0]['fields'][0]['value'], self.field()['value'])
     def test_formula_escape(self):
         for s in ['=HYPERLINK("bad")','+1','-1','@SUM(A1)','  =1','\t=1','\n=1']:
             self.assertTrue(m.csv_safe(s).startswith("'"))

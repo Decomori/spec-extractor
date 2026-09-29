@@ -22,6 +22,12 @@ def validate(data: Any) -> list[str]:
             errors.append(message)
     if not isinstance(data, dict):
         return ['Root must be an object.']
+    # Check the entire document, including nested values, candidates and optional
+    # metadata, before export creates a directory or writes any result files.
+    try:
+        json.dumps(data, allow_nan=False)
+    except (TypeError, ValueError) as exc:
+        return [f'Input must contain only finite JSON values: {exc}']
     check(data.get('schema_version') == '1.0', 'schema_version must be 1.0.')
     sources = data.get('sources')
     products = data.get('products')
