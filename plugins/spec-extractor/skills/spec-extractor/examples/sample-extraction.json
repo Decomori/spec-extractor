@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "id": "s1",
+      "file": "sample-source.txt",
+      "kind": "text"
+    }
+  ],
+  "products": [
+    {
+      "product_id": "EXAMPLE-ADAPTER-01",
+      "variant_id": "EU",
+      "fields": [
+        {
+          "key": "input_voltage",
+          "raw_value": "100–240 V AC, 50/60 Hz",
+          "value": "100–240 V AC, 50/60 Hz",
+          "unit": null,
+          "status": "sourced",
+          "evidence": [
+            {
+              "source_id": "s1",
+              "locator": "line 4",
+              "quote": "Input: 100–240 V AC, 50/60 Hz"
+            }
+          ]
+        },
+        {
+          "key": "rated_power",
+          "raw_value": "65 W max / 60 W max",
+          "value": null,
+          "unit": "W",
+          "status": "conflict",
+          "evidence": [],
+          "candidates": [
+            {
+              "raw_value": "65 W max",
+              "value": "65 max",
+              "unit": "W",
+              "evidence": [
+                {
+                  "source_id": "s1",
+                  "locator": "line 5",
+                  "quote": "Output power: 65 W max"
+                }
+              ]
+            },
+            {
+              "raw_value": "60 W max",
+              "value": "60 max",
+              "unit": "W",
+              "evidence": [
+                {
+                  "source_id": "s1",
+                  "locator": "line 7",
+                  "quote": "output power as 60 W max"
+                }
+              ]
+            }
+          ],
+          "notes": "Do not select a candidate without verifying the applicable revision."
+        },
+        {
+          "key": "dimensions",
+          "raw_value": "30 × 45 × 60 mm",
+          "value": "30 × 45 × 60",
+          "unit": "mm",
+          "status": "sourced",
+          "evidence": [
+            {
+              "source_id": "s1",
+              "locator": "line 6",
+              "quote": "Dimensions: 30 × 45 × 60 mm (axis order not stated)"
+            }
+          ],
+          "notes": "No length/width/height assignment."
+        },
+        {
+          "key": "weight",
+          "raw_value": null,
+          "value": null,
+          "unit": null,
+          "status": "missing",
+          "evidence": [],
+          "notes": "No weight value in inspected source."
+        }
+      ]
+    }
+  ]
+}

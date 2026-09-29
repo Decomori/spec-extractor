@@ -1,0 +1,12 @@
+{
+  "profile": "generic",
+  "fields": [
+    "model",
+    "dimensions",
+    "weight",
+    "material",
+    "color"
+  ],
+  "units": "preserve_source",
+  "infer_missing": false
+}

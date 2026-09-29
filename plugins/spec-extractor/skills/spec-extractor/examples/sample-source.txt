@@ -1,0 +1,8 @@
+SYNTHETIC TEST FIXTURE — not a real product specification.
+Model: EXAMPLE-ADAPTER-01
+Variant: EU
+Input: 100–240 V AC, 50/60 Hz
+Output power: 65 W max
+Dimensions: 30 × 45 × 60 mm (axis order not stated)
+A separate packaging note lists output power as 60 W max.
+Weight: not supplied

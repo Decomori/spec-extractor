@@ -1,0 +1,20 @@
+{
+  "name": "spec-extractor-catalog",
+  "interface": {
+    "displayName": "Spec Extractor"
+  },
+  "plugins": [
+    {
+      "name": "spec-extractor",
+      "source": {
+        "source": "local",
+        "path": "./plugins/spec-extractor"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "profile": "lighting",
+  "fields": [
+    "model",
+    "power",
+    "luminous_flux",
+    "cct",
+    "cri",
+    "beam_angle",
+    "input_voltage",
+    "ip_rating",
+    "dimensions",
+    "cutout",
+    "driver"
+  ],
+  "units": "preserve_source",
+  "infer_missing": false
+}

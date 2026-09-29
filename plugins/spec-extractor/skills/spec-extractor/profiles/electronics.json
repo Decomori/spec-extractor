@@ -1,0 +1,14 @@
+{
+  "profile": "electronics",
+  "fields": [
+    "model",
+    "input_voltage",
+    "output_voltage",
+    "rated_power",
+    "interfaces",
+    "dimensions",
+    "weight"
+  ],
+  "units": "preserve_source",
+  "infer_missing": false
+}

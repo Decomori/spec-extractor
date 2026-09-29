@@ -1,0 +1,14 @@
+{
+  "name": "spec-extractor",
+  "version": "0.1.0",
+  "description": "Source-backed product specification extraction with validation and CSV export.",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Spec Extractor",
+    "shortDescription": "Source-backed product specification extraction with validation and CSV export.",
+    "defaultPrompt": [
+      "Use Spec Extractor for this task."
+    ]
+  }
+}

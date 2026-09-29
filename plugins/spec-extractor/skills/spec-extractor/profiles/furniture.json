@@ -1,0 +1,13 @@
+{
+  "profile": "furniture",
+  "fields": [
+    "model",
+    "material",
+    "finish",
+    "dimensions",
+    "weight",
+    "load_capacity"
+  ],
+  "units": "preserve_source",
+  "infer_missing": false
+}
